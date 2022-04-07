@@ -5,7 +5,8 @@ if [ "${DEBUG:-}" ]; then;
   set -x
 fi
 
-cd "/Users/chadwhitacre/workbench/getsentry"
+org="$(basename $(pwd))"
+src="$1"
 
 function hard-reset {
   cd "$1"
@@ -19,13 +20,13 @@ function hard-reset {
 function make-pr {
   local url="$2"
   local repo=$(basename "$1")
-  local workflows="$repo/.github/workflows"
+  local target="$repo/.github/workflows"
   local rnd="$(cat /dev/urandom | env LC_CTYPE=C tr -cd 'a-f0-9' | head -c 8)"
   local branch="bot/deploy-$rnd"
 
   echo "Making PR for $repo with branch $branch ..."
   hard-reset "$repo"
-  cp .github/.github/workflows/validate-new-issue.yml "$workflows"
+  cp "$src" "$target"
   cd "$repo"
   git branch -D "$branch" || true
   git checkout -b "$branch"
@@ -49,11 +50,11 @@ echo "Checking targets ..."
 if [ -z "$*" ]; then
   problem="Nothing to deploy"
 else
-  for target in $@; do
-    repo=$(basename "$target")
-    workflows="$repo/.github/workflows"
-    echo -n "  $workflows "
-    if [ -d "$workflows" ]; then 
+  for target_repo in $@; do
+    repo=$(basename "$target_repo")
+    target="$repo/.github/workflows"
+    echo -n "  $target "
+    if [ -d "$target" ]; then 
       echo "👍"
     else
       echo "... where is it?"
@@ -70,7 +71,7 @@ fi
 echo "Resetting local .github repo ..."
 hard-reset .github
 sha="$(git -C .github/.git rev-parse HEAD)"
-url="https://github.com/getsentry/.github/blob/$sha/.github/workflows/validate-new-issue.yml"
+url="https://github.com/$org/.github/blob/$sha/.github/workflows/$(basename $src)"
 
 echo "Making PR(s) ..."
 for target in $@; do
