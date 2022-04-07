@@ -1,0 +1,78 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+if [ "${DEBUG:-}" ]; then;
+  set -x
+fi
+
+cd "/Users/chadwhitacre/workbench/getsentry"
+
+function hard-reset {
+  cd "$1"
+  git reset --hard
+  git clean -fd # Yeah, watch out.
+  git checkout main || git checkout master
+  git pull --rebase --prune
+  cd ..
+}
+
+function make-pr {
+  local url="$2"
+  local repo=$(basename "$1")
+  local workflows="$repo/.github/workflows"
+  local rnd="$(cat /dev/urandom | env LC_CTYPE=C tr -cd 'a-f0-9' | head -c 8)"
+  local branch="bot/deploy-$rnd"
+
+  echo "Making PR for $repo with branch $branch ..."
+  hard-reset "$repo"
+  cp .github/.github/workflows/validate-new-issue.yml "$workflows"
+  cd "$repo"
+  git branch -D "$branch" || true
+  git checkout -b "$branch"
+  if [ -z "$(git status --porcelain=v1)" ]; then
+    echo "Already deployed?"
+    exit 1
+  fi
+  git add .
+  git commit -nm 'meta(gha): Deploy action validate-new-issue.yml'
+  git push --delete origin $branch 2>/dev/null || true
+  git push --set-upstream origin "$branch"
+  gh pr create --fill --body="I are a bot, here to deploy [validate-new-issue.yml]($url). 🤖"
+  git checkout main || git checkout master
+  git branch -D "$branch"
+  cd ..
+}
+
+problem=""
+
+echo "Checking targets ..."
+if [ -z "$*" ]; then
+  problem="Nothing to deploy"
+else
+  for target in $@; do
+    repo=$(basename "$target")
+    workflows="$repo/.github/workflows"
+    echo -n "  $workflows "
+    if [ -d "$workflows" ]; then 
+      echo "👍"
+    else
+      echo "... where is it?"
+      problem="Missing target(s)"
+    fi
+  done
+fi
+
+if test "$problem"; then
+  echo "$problem. Giving up."
+  exit 1
+fi
+
+echo "Resetting local .github repo ..."
+hard-reset .github
+sha="$(git -C .github/.git rev-parse HEAD)"
+url="https://github.com/getsentry/.github/blob/$sha/.github/workflows/validate-new-issue.yml"
+
+echo "Making PR(s) ..."
+for target in $@; do
+  make-pr "$target" "$url"
+done
