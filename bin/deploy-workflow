@@ -23,6 +23,7 @@ function hard-reset {
 
 function make-pr {
   local url="$2"
+  local filename="$(basename $url)"
   local repo=$(basename "$1")
   local target="$repo/.github/workflows"
   local rnd="$(cat /dev/urandom | base64 | tr -cd 'a-f0-9' | head -c 8)"
@@ -39,11 +40,11 @@ function make-pr {
     exit 1
   fi
   git add .
-  git commit -nm 'meta(gha): Deploy action validate-new-issue.yml'
+  git commit -nm 'meta(gha): Deploy action $filename'
   git push --delete origin $branch 2>/dev/null || true
   git push --set-upstream origin "$branch"
 	body=$(cat <<-END
-		I are a bot, here to deploy [$(basename $url)]($url). 🤖
+		I are a bot, here to deploy [$filename]($url). 🤖
 
 		#skip-changelog
 END
