@@ -127,7 +127,7 @@ abbreviate xb xdebug_break();
 abbreviate pry require 'pry'; binding.pry
 abbreviate rbk runtime.Breakpoint()
 abbreviate enc # -*- coding: utf-8 -*-
-abbreviate #! #!/usr/bin/env bash
+abbreviate #! #!/usr/bin/env zsh
 abbreviate fut from __future__ import absolute_import, division, print_function, unicode_literals
 
 imap <C-d> <Esc>:r!date +\%Y-\%m-\%d<Enter>i<BS><End><Enter>
