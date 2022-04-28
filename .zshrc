@@ -164,7 +164,7 @@ source ~/.fzf.zsh
 alias ubuntu="docker run --rm -it -v\"$(pwd):/portal\" -w/portal ubuntu:latest bash"
 
 # PATH
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/flutter/bin:$PATH"
 export PATH="./node_modules/.bin:$PATH"
 
