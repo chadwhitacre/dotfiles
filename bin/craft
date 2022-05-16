@@ -2,6 +2,7 @@
 set -euo pipefail
 root="/Users/chadwhitacre/workbench/getsentry/craft"
 back="$(pwd)"
+cd "$root"
 yarn build > /dev/null 2>&1
 cd "$back"
 volta run \
