@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+root="/Users/chadwhitacre/workbench/getsentry/craft"
+back="$(pwd)"
+yarn build > /dev/null 2>&1
+cd "$back"
+volta run \
+  --node=$(jq -r .volta.node "$root/package.json") \
+  --yarn=$(jq -r .volta.yarn "$root/package.json") \
+  node "$root/dist/craft" \
+  "$@"
