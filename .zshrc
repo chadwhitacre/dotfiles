@@ -75,6 +75,7 @@ alias h="python3 -m http.server -b 0.0.0.0 ${1:-7000}"
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 alias fetch="curl --remote-name --remote-header-name"
 alias grip="grip --user chadwhitacre --pass REPLACEME -b"
+alias cal="clear && cal $(date +%Y)"
 
 # git
 alias ci="git commit"
