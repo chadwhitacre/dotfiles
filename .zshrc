@@ -1,83 +1,67 @@
 # Oh My Zsh
-export ZSH="/Users/chadwhitacre/.oh-my-zsh"
+# =========
+
+plugins=(git)
+HIST_STAMPS="yyyy-mm-dd"
 ZSH_THEME="chadwhitacre"
 HYPHEN_INSENSITIVE="true"
 DISABLE_AUTO_TITLE="true"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-HIST_STAMPS="yyyy-mm-dd"
-plugins=(git)
+export ZSH="/Users/chadwhitacre/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 unsetopt AUTO_CD
 
-# Homebrew
-export PATH="~/go/bin:/usr/local/opt/bin:/opt/homebrew/bin:$PATH"
 
-# My stuff.
+# PATH
+# ====
+
 export PATH="$HOME/bin:$PATH"
-export BLOCKSIZE=K
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="./node_modules/.bin:$PATH"
+
+
+# Other Environment Variables
+# ===========================
+
 export EDITOR=vim
 export PAGER=less
-export LESS='--RAW-CONTROL-CHARS --chop-long-lines --LONG-PROMPT'
-export LSCOLORS=gxfxcxdxbxegedabagacad
+export BLOCKSIZE=K
 export LANG="en_US.UTF-8"
-
 export PYTHONDONTWRITEBYTECODE=true
+export LSCOLORS=gxfxcxdxbxegedabagacad
 export PYTEST_ADDOPTS="--tb=native --capture=no"
+export LESS='--RAW-CONTROL-CHARS --chop-long-lines --LONG-PROMPT'
 
-rnd() {
-  n=$1
-  if [ -z "$n" ]; then
-    n=32
-  fi
-  cat /dev/urandom | base64 | tr -cd 'a-f0-9' | head -c $n
-  echo
-}
 
-rp() {
-  rnd "$1" | pbcopy
-}
+# Navigation
+# ==========
 
-# http://boredzo.org/blog/archives/2016-08-15/colorized-man-pages-understood-and-customized
-# https://gist.github.com/cocoalabs/2fb7dc2199b0d4bf160364b8e557eb66
-
-manc() {
-  env \
-    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-    LESS_TERMCAP_md=$(printf "\e[1;31m") \
-    LESS_TERMCAP_me=$(printf "\e[0m") \
-    LESS_TERMCAP_se=$(printf "\e[0m") \
-    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-    LESS_TERMCAP_ue=$(printf "\e[0m") \
-    LESS_TERMCAP_us=$(printf "\e[1;32m") \
-      man "$@"
-}
-
-# http://sealence.x10hosting.com/wordpress/?p=28
-stty stop ^-
-# Ctrl-S is usually stop (tty control flow), but we want vim to see it.
-# Ctrl-Q is start, for the record.
-eval "$(direnv hook zsh)"
-
-# zsh
 alias c='cd'
 alias p='pwd'
 alias l='clear && p && ls -FGl'
 alias u='c .. && l'
-
-# nav shortcuts
 alias w='c ~/workbench/ && l'
 
-# basics
-alias sc="screen -D -RR -U"
-alias pbtrim="pbpaste | sed -e 's/ *$//' | pbcopy"
-alias h="python3 -m http.server -b 0.0.0.0 ${1:-7000}"
-alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
-alias fetch="curl --remote-name --remote-header-name"
-alias grip="grip --user chadwhitacre --pass REPLACEME -b"
-alias cal="clear && cal $(date +%Y)"
 
-# git
+# Grab Bag 
+# ========
+
+alias sc="screen -D -RR -U"
+alias cal="clear && cal $(date +%Y)"
+alias pbtrim="pbpaste | sed -e 's/ *$//' | pbcopy"
+alias fetch="curl --remote-name --remote-header-name"
+alias h="python3 -m http.server -b 0.0.0.0 ${1:-7000}"
+alias grip="grip --user chadwhitacre --pass REPLACEME -b"
+alias ag="ag -i --pager='less -R' -S --ignore node_modules"
+alias remove-screenshots="rm -f ~/Desktop/Screen\ Shot\ *.png"
+alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+alias ubuntu="docker run --rm -it -v\"$(pwd):/portal\" -w/portal ubuntu:latest bash"
+
+
+# Git
+# ===
+
 alias ci="git commit"
 alias co="git checkout"
 alias gb="git branch"
@@ -114,7 +98,6 @@ blm() {
   gr -i main
 }
 
-
 # https://botbot.me/freenode/gittip/msg/5681704/
 # https://github.com/gnarf/.dotfiles/blob/master/.gitconfig#L24-L27
 pr() { 
@@ -130,13 +113,10 @@ pru() {
   git checkout pr/$1
 }
 
-# ag
-alias ag="ag -i --pager='less -R' -S --ignore node_modules"
 
-# docker
+# Docker
 # ======
 
-# basics
 alias dim="docker image"
 alias dil="docker image ls -a"
 alias dcn="docker container"
@@ -152,7 +132,7 @@ alias dnew="docker run --rm"
 # run in an existing container  drun <running container:sha> <command>
 alias drun="docker container exec -it"
 
-# run a shell in a container    dsh <running container:sha>
+# shell into a new container    dsh <running container:sha>
 dsh() { docker container exec -it "$1" /bin/sh; }
 
 # bring up a service            dcu <service:name>
@@ -160,23 +140,54 @@ alias dcu="docker-compose up --build"
 alias dcr="docker-compose run --rm"
 
 
-# fzf
+# Random String (Password) Helpers
+# ================================
+
+rnd() {
+  cat /dev/urandom | base64 | tr -cd 'a-f0-9' | head -c "${1:-32}"
+  echo
+}
+
+rp() {
+  rnd "$1" | pbcopy
+}
+
+
+# man
+# ===
+# http://boredzo.org/blog/archives/2016-08-15/colorized-man-pages-understood-and-customized
+# https://gist.github.com/cocoalabs/2fb7dc2199b0d4bf160364b8e557eb66
+
+manc() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+      man "$@"
+}
+
+
+# Vim
+# ===
+# http://sealence.x10hosting.com/wordpress/?p=28
+# Ctrl-S is usually stop (tty control flow), but we want Vim to see it.
+# Ctrl-Q is start, for the record.
+
+stty stop ^-
+
+
+# Shell Hooks
+# ===========
+
 source ~/.fzf.zsh
+eval "$(direnv hook zsh)"
 
-alias ubuntu="docker run --rm -it -v\"$(pwd):/portal\" -w/portal ubuntu:latest bash"
 
-# PATH
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/opt/flutter/bin:$PATH"
-export PATH="./node_modules/.bin:$PATH"
-
-alias remove-screenshots="rm -f ~/Desktop/Screen\ Shot\ *.png"
-
-# bun completions
-[ -s "/Users/chadwhitacre/.bun/_bun" ] && source "/Users/chadwhitacre/.bun/_bun"
-
-# Bun
-export BUN_INSTALL="/Users/chadwhitacre/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# Local Customizations
+# ====================
 
 source ~/.zshrc.local
