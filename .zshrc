@@ -170,8 +170,6 @@ export PATH="/opt/flutter/bin:$PATH"
 export PATH="./node_modules/.bin:$PATH"
 
 alias remove-screenshots="rm -f ~/Desktop/Screen\ Shot\ *.png"
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
 
 # bun completions
 [ -s "/Users/chadwhitacre/.bun/_bun" ] && source "/Users/chadwhitacre/.bun/_bun"
@@ -179,3 +177,5 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 # Bun
 export BUN_INSTALL="/Users/chadwhitacre/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+source ~/.zshrc.local
