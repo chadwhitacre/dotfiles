@@ -102,7 +102,7 @@ set tabstop=2 " not softtabstop!
 autocmd FileType make,go setlocal noexpandtab
 
 " http://vim.wikia.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace
-autocmd FileType go,python,html,javascript,css,scss,vim,rb,c,js,sql,beancount autocmd BufWritePre <buffer> :%s/\s\+$//e
+autocmd FileType go,python,html,javascript,css,scss,vim,rb,c,js,typescript,sql,beancount autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 " https://stackoverflow.com/questions/1050640/vim-disable-automatic-newline-at-end-of-file
 autocmd FileType php setlocal nofixendofline
@@ -122,6 +122,12 @@ autocmd FileType php setlocal nofixendofline
 
 " ht Dusty Phillips for teaching me 'abbreviate'
 abbreviate ip import ipdb; ipdb.set_trace()
+abbreviate cl- console.log('🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺⤵️\n\n', {<cr>foo,<cr>}, '\n\n🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺⤴️');<esc>kkw
+abbreviate cl1- console.log('🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺⤵️\n\n', {<cr>foo,<cr>}, '\n\n🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺🌺⤴️');<esc>kkw
+abbreviate cl2- console.log('🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸⤵️\n\n', {<cr>bar,<cr>}, '\n\n🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸⤴️');<esc>kkw
+abbreviate cl3- console.log('🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼⤵️\n\n', {<cr>baz,<cr>}, '\n\n🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼🌼⤴️');<esc>kkw
+abbreviate cl4- console.log('🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⤵️\n\n', {<cr>baz,<cr>}, '\n\n🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⤴️');<esc>kkw
+abbreviate cl5- console.log('🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲⤵️\n\n', {<cr>baz,<cr>}, '\n\n🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲⤴️');<esc>kkw
 abbreviate pdb import pdb; pdb.set_trace()
 abbreviate xb xdebug_break();
 abbreviate pry require 'pry'; binding.pry

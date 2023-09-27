@@ -16,7 +16,7 @@ unsetopt AUTO_CD
 # PATH
 # ====
 
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/bin:./bin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="./node_modules/.bin:$PATH"
 
@@ -47,16 +47,25 @@ alias w='c ~/workbench/ && l'
 # Grab Bag 
 # ========
 
+center() {
+    columns="$(tput cols)"
+    while IFS= read -r line; do
+        printf "%*s\n" $(( (${#line} + columns) / 2)) "$line"
+        #printf "%*s\n" "10" "$line"
+    done < "${1:-/dev/stdin}"
+}
+
 alias sc="screen -D -RR -U"
-alias cal="clear && cal $(date +%Y)"
 alias pbtrim="pbpaste | sed -e 's/ *$//' | pbcopy"
 alias fetch="curl --remote-name --remote-header-name"
 alias h="python3 -m http.server -b 0.0.0.0 ${1:-7000}"
 alias grip="grip --user chadwhitacre --pass REPLACEME -b"
-alias ag="ag -i --pager='less -R' -S --ignore node_modules"
-alias remove-screenshots="rm -f ~/Desktop/Screen\ Shot\ *.png"
+alias ag="ag -i --pager='less -R' -S"
+alias remove-screenshots="rm -f ~/Desktop/Screenshot\ *.png"
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
-alias ubuntu="docker run --rm -it -v\"$(pwd):/portal\" -w/portal ubuntu:latest bash"
+function cal { clear; echo; echo; echo; /usr/bin/cal ${1:-$(date +%Y)}; echo; echo; echo }
+alias ubuntu="dr -v\"$(pwd):/portal\" -w/portal ubuntu:latest bash"
+alias mentat="~/workbench/mentat/.venv/bin/mentat"
 
 
 # Git
@@ -76,6 +85,8 @@ alias gp="git push"
 alias gr="git rebase" 
 alias grc="git rebase --continue" 
 alias gs="git status --short"
+alias gsa="git stash"
+alias gsp="git stash pop"
 alias qgs="gs"
 alias gt="git tag"
 alias gup="git fetch upstream && git rebase upstream/main && git push"
@@ -122,12 +133,16 @@ alias dil="docker image ls -a"
 alias dcn="docker container"
 alias dcl="docker container ls -a"
 alias dcm="docker-compose"
+alias dsp="yes | docker system prune"
 
 # build an image                dib <path>
 dib() { [ -n "$1" ] && docker image build -t "$(basename $(realpath $1))" "$1"; }
 
 # create a new container        dnew (-it) (--entrypoint) <image:sha|name> (<command>)
 alias dnew="docker run --rm"            
+
+# quick docker run              dr (--entrypoint) <image:sha|name> (<command>)
+alias dr="docker run --rm -it"
 
 # run in an existing container  drun <running container:sha> <command>
 alias drun="docker container exec -it"
