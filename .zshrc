@@ -65,7 +65,7 @@ alias remove-screenshots="rm -f ~/Desktop/Screenshot\ *.png"
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 function cal { clear; echo; echo; echo; /usr/bin/cal ${1:-$(date +%Y)}; echo; echo; echo }
 alias ubuntu="dr -v\"$(pwd):/portal\" -w/portal ubuntu:latest bash"
-alias mentat="~/workbench/mentat/.venv/bin/mentat"
+alias heic-to-jpg="magick mogrify -monitor -format jpg *.heic && rm '*.heic'"
 
 
 # Git
