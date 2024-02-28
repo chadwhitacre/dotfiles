@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
 for img in ~/Desktop/Screen*.png(N) ${@:2}; do
-  convert "$img" -fuzz 1% -trim -bordercolor white -border "${1:-40}" "$img"
+  convert "$img" -fuzz 1% -trim -bordercolor white -border "${1:-0}" "$img"
 done

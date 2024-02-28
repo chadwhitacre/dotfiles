@@ -58,14 +58,14 @@ center() {
 alias sc="screen -D -RR -U"
 alias pbtrim="pbpaste | sed -e 's/ *$//' | pbcopy"
 alias fetch="curl --remote-name --remote-header-name"
-alias h="python3 -m http.server -b 0.0.0.0 ${1:-7000}"
+alias h="python3 -m http.server -b 0.0.0.0 ${1:-4000}"
 alias grip="grip --user chadwhitacre --pass $(cat ~/.grip/token) -b"
 alias ag="ag -i --pager='less -R' -S"
-alias remove-screenshots="rm -f ~/Desktop/Screenshot\ *.png"
+alias remove-screenshots="rm -f ~/Desktop/Screenshot\ *.png ~/Desktop/framed"
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 function cal { clear; echo; echo; echo; /usr/bin/cal ${1:-$(date +%Y)}; echo; echo; echo }
 alias ubuntu="dr -v\"$(pwd):/portal\" -w/portal ubuntu:latest bash"
-alias heic-to-jpg="magick mogrify -monitor -format jpg *.heic && rm '*.heic'"
+alias heic-to-jpg="magick mogrify -monitor -format jpg *.heic *.HEIC && rm -f *.heic *.HEIC"
 
 
 # Git
@@ -74,6 +74,8 @@ alias heic-to-jpg="magick mogrify -monitor -format jpg *.heic && rm '*.heic'"
 alias ci="git commit"
 alias co="git checkout"
 alias gb="git branch"
+alias gbb="git bisect bad"
+alias gbg="git bisect good"
 alias gbm="git branch --merged"
 alias gd="git diff" 
 alias gdc="git diff --cached" 
@@ -159,7 +161,8 @@ alias dcr="docker-compose run --rm"
 # ================================
 
 rnd() {
-  cat /dev/urandom | base64 | tr -cd 'a-f0-9' | head -c "${1:-32}"
+  N="${1:-32}"
+  od -vAn -N"$N" -tx1 < /dev/urandom | tr -d '[:space:]' | head -c "$N"
   echo
 }
 
