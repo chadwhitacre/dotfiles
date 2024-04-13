@@ -65,8 +65,8 @@ alias remove-screenshots="rm -f ~/Desktop/Screenshot\ *.png ~/Desktop/framed"
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 function cal { clear; echo; echo; echo; /usr/bin/cal ${1:-$(date +%Y)}; echo; echo; echo }
 alias ubuntu="dr -v\"$(pwd):/portal\" -w/portal ubuntu:latest bash"
-function heic-to-jpg {
-  magick mogrify -monitor -format jpg $(find . -maxdepth 1 -iname \*.heic)
+function heic-to-webp {
+  magick mogrify -monitor -format webp $(find . -maxdepth 1 -iname \*.heic)
   rm $(find . -maxdepth 1 -iname \*.heic)
 }
 
